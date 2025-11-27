@@ -85,8 +85,8 @@ if ( ! class_exists( 'PostmanEmailLogService' ) ) {
                 $this->writeSuccessLog( $log, $message, $transcript, $transport );
             }
         }
-				public function write_failed_log( $log, $message, $transcript,$statusMessage,$transport = null  )
-        {
+
+        public function write_failed_log( $log, $message, $transcript, $transport = null, $statusMessage = null ) {
             $options = PostmanOptions::getInstance();
             if ( $options->getRunMode() == PostmanOptions::RUN_MODE_PRODUCTION || $options->getRunMode() == PostmanOptions::RUN_MODE_LOG_ONLY ) {
 				$this->writeFailureLog( $log, $transcript, $statusMessage, $transport, $message );

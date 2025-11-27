@@ -511,8 +511,9 @@ class Post_SMTP_New_Wizard {
 
         }
         $gmail_icon_url = POST_SMTP_URL . '/Postman/Wizard/assets/images/gmail.png';
-        $localized['gmail_icon'] = $gmail_icon_url; 
-        
+		$localized['gmail_icon'] = $gmail_icon_url; 
+        $localized['tenantId'] = apply_filters( 'post_smtp_office365_tenant_id', 'common' ); 
+
         wp_enqueue_style( 'post-smtp-wizard', POST_SMTP_URL . '/Postman/Wizard/assets/css/wizard.css', array(), POST_SMTP_VER );
         wp_enqueue_script( 'post-smtp-wizard', POST_SMTP_URL . '/Postman/Wizard/assets/js/wizard.js', array( 'jquery' ), POST_SMTP_VER );
         wp_localize_script( 'post-smtp-wizard', 'PostSMTPWizard', $localized );
@@ -1628,9 +1629,9 @@ public function render_gmail_settings() {
                 $sanitized['ses_region'] = isset( $sanitized['ses_region'] ) ? $sanitized['ses_region'] : '';
                 $sanitized['enc_type'] = 'tls';
                 $sanitized['auth_type'] = 'login';
-				$sanitized['slack_token'] = base64_decode( $options['slack_token'] );
-                $sanitized['pushover_user'] = base64_decode( $options['pushover_user'] );
-                $sanitized['pushover_token'] = base64_decode( $options['pushover_token'] );
+                $sanitized['slack_token'] = base64_decode( isset( $options['slack_token'] ) ? $options['slack_token'] : '' );
+                $sanitized['pushover_user'] = base64_decode( isset( $options['pushover_user'] ) ? $options['pushover_user'] : '' );
+                $sanitized['pushover_token'] = base64_decode( isset( $options['pushover_token'] ) ? $options['pushover_token'] : '' );
                 foreach( $sanitized as $key => $value ) {
                     $options[$key] = $value;
                 }
@@ -1766,6 +1767,23 @@ public function render_gmail_settings() {
     public function handle_gmail_oauth_redirect() {
         // Check if the required OAuth parameters are present in the URL.
         if ( isset( $_GET['action'] ) && $_GET['action'] === 'gmail_oauth_redirect' ) {
+            
+        // Capability check: Only allow administrators to update OAuth tokens
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'post-smtp' ) );
+        }
+        
+        // CSRF protection: Verify nonce (required by security report)
+        if ( ! isset( $_GET['_wpnonce'] ) || empty( $_GET['_wpnonce'] ) ) {
+            wp_die( esc_html__( 'Security check failed. Nonce is missing.', 'post-smtp' ) );
+        }
+        
+        // Verify the nonce
+        $nonce = sanitize_text_field( $_GET['_wpnonce'] );
+        if ( ! wp_verify_nonce( $nonce, 'gmail_oauth_redirect' ) ) {
+            wp_die( esc_html__( 'Security check failed. Invalid nonce. Please try again.', 'post-smtp' ) );
+        }
+            
             // Sanitize and retrieve URL parameters
             $access_token  = isset( $_GET['access_token'] ) ? sanitize_text_field( $_GET['access_token'] ) : null;
             $refresh_token = isset( $_GET['refresh_token'] ) ? sanitize_text_field( $_GET['refresh_token'] ) : null;
@@ -1787,6 +1805,7 @@ public function render_gmail_settings() {
             }
         }
     }
+
 
 
 }
