@@ -1,0 +1,14 @@
+2025-11-25T11:50:36+00:00 DEBUG #6225 - [New Request] POST /naveen/wordpress/wp-json/wc-admin/plugins/install
+2025-11-25T11:50:36+00:00 DEBUG #6225 - Webhook lock acquired for 'register'.
+2025-11-25T11:50:36+00:00 DEBUG #6225 - Webhook operation 'register' started.
+2025-11-25T11:50:36+00:00 DEBUG #6225 - GET https://api.woocommerce.com/integrations/ppc/v1/notifications/webhooks
+Request failed. WP error message: cURL error 6: Could not resolve host: api.woocommerce.com
+
+2025-11-25T11:50:36+00:00 ERROR #6225 - Failed to delete webhooks: Not able to load webhooks list.
+2025-11-25T11:50:36+00:00 INFO #6225 - Webhooks deleted.
+2025-11-25T11:50:36+00:00 DEBUG #6225 - POST https://api.woocommerce.com/integrations/ppc/v1/notifications/webhooks
+Request Body: {"url":"https:\/\/localhost\/naveen\/wordpress\/wp-json\/paypal\/v1\/incoming","event_types":[{"name":"CHECKOUT.ORDER.APPROVED"},{"name":"CHECKOUT.ORDER.COMPLETED"},{"name":"CHECKOUT.PAYMENT-APPROVAL.REVERSED"},{"name":"PAYMENT.CAPTURE.REFUNDED"},{"name":"PAYMENT.AUTHORIZATION.VOIDED"},{"name":"PAYMENT.CAPTURE.REVERSED"},{"name":"PAYMENT.ORDER.CANCELLED"},{"name":"PAYMENT.CAPTURE.DENIED"},{"name":"PAYMENT.CAPTURE.COMPLETED"},{"name":"VAULT.PAYMENT-TOKEN.CREATED"},{"name":"VAULT.PAYMENT-TOKEN.DELETED"},{"name":"PAYMENT.CAPTURE.PENDING"},{"name":"PAYMENT.SALE.COMPLETED"},{"name":"PAYMENT.SALE.REFUNDED"},{"name":"BILLING.SUBSCRIPTION.CANCELLED"},{"name":"BILLING.PLAN.PRICING-CHANGE.ACTIVATED"},{"name":"CATALOG.PRODUCT.UPDATED"},{"name":"BILLING.PLAN.UPDATED"}]}
+Request failed. WP error message: cURL error 6: Could not resolve host: api.woocommerce.com
+
+2025-11-25T11:50:36+00:00 ERROR #6225 - Failed to subscribe webhooks: Not able to create a webhook.
+2025-11-25T11:50:37+00:00 DEBUG #6225 - Webhook lock released for 'register'.
